@@ -52,7 +52,7 @@
                 <div class="flex items-center gap-3 bg-gray-950 rounded-3xl p-4">
                     <div class="w-10 h-10 bg-emerald-500 rounded-2xl flex items-center justify-center font-bold">V</div>
                     <div>
-                        <p class="font-medium">Vidhu Kumar S V</p>
+                        <p class="font-medium">Vidhu</p>
                         <p class="text-xs text-gray-400">Chennai</p>
                     </div>
                 </div>
@@ -96,19 +96,13 @@
                         <p id="dash-networth" class="text-4xl font-semibold mt-3">₹0</p>
                     </div>
                 </div>
-
-                <div class="mt-16 text-center text-gray-400 py-20">
-                    <i class="fa-solid fa-wallet text-6xl mb-6 opacity-50"></i>
-                    <p class="text-2xl font-medium">Start building your financial picture</p>
-                </div>
             </div>
 
             <!-- Assets Page -->
             <div id="assets-page" class="page hidden flex-1 p-8 overflow-auto">
                 <div class="flex justify-between items-center mb-8">
                     <h2 class="text-3xl font-semibold">Assets</h2>
-                    <button onclick="startAddAsset()" 
-                            class="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-6 py-3 rounded-3xl flex items-center gap-2">
+                    <button onclick="startAddAsset()" class="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-6 py-3 rounded-3xl flex items-center gap-2">
                         <i class="fa-solid fa-plus"></i> Add Asset
                     </button>
                 </div>
@@ -118,8 +112,9 @@
                             <tr>
                                 <th class="text-left py-5 px-8">Asset Name</th>
                                 <th class="text-left py-5 px-8">Class • Subtype</th>
-                                <th class="text-right py-5 px-8">Invested (₹)</th>
-                                <th class="text-right py-5 px-8">Current Value (₹)</th>
+                                <th class="text-right py-5 px-8">Units</th>
+                                <th class="text-right py-5 px-8">Avg Buy Price</th>
+                                <th class="text-right py-5 px-8">Current Value</th>
                                 <th class="text-right py-5 px-8">P/L</th>
                                 <th class="text-center py-5 px-8">Actions</th>
                             </tr>
@@ -173,12 +168,11 @@
                 </div>
             </div>
 
-            <!-- Goals Page with Linking -->
+            <!-- Goals Page -->
             <div id="goals-page" class="page hidden flex-1 p-8 overflow-auto">
                 <div class="flex justify-between mb-8">
                     <h2 class="text-3xl font-semibold">Goal Tracker</h2>
-                    <button onclick="showAddGoalModal()" 
-                            class="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-6 py-3 rounded-3xl flex items-center gap-2">
+                    <button onclick="showAddGoalModal()" class="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-6 py-3 rounded-3xl flex items-center gap-2">
                         <i class="fa-solid fa-plus"></i> New Goal
                     </button>
                 </div>
@@ -187,25 +181,17 @@
         </div>
     </div>
 
-    <!-- Add Asset Modal (Two-step) -->
+    <!-- Add / Edit Asset Modal -->
     <div id="add-asset-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
         <div class="modal bg-gray-900 rounded-3xl w-full max-w-2xl mx-4 p-8">
-            <h3 id="modal-step-title" class="text-2xl font-semibold mb-6">Step 1: Choose Asset Class</h3>
+            <h3 id="modal-title" class="text-2xl font-semibold mb-6">Add New Asset</h3>
 
             <div id="step-1">
                 <div class="grid grid-cols-2 gap-4">
-                    <button onclick="selectClass('Equity')" class="p-6 border-2 border-gray-700 hover:border-emerald-400 rounded-3xl text-left">
-                        <span class="text-3xl">📈</span><br><span class="font-semibold text-lg mt-3 block">Equity</span>
-                    </button>
-                    <button onclick="selectClass('Debt')" class="p-6 border-2 border-gray-700 hover:border-emerald-400 rounded-3xl text-left">
-                        <span class="text-3xl">🏦</span><br><span class="font-semibold text-lg mt-3 block">Debt</span>
-                    </button>
-                    <button onclick="selectClass('Commodity')" class="p-6 border-2 border-gray-700 hover:border-emerald-400 rounded-3xl text-left">
-                        <span class="text-3xl">🏅</span><br><span class="font-semibold text-lg mt-3 block">Commodity</span>
-                    </button>
-                    <button onclick="selectClass('Real Estate')" class="p-6 border-2 border-gray-700 hover:border-emerald-400 rounded-3xl text-left">
-                        <span class="text-3xl">🏠</span><br><span class="font-semibold text-lg mt-3 block">Real Estate</span>
-                    </button>
+                    <button onclick="selectClass('Equity')" class="p-6 border-2 border-gray-700 hover:border-emerald-400 rounded-3xl text-left">📈<br><span class="font-semibold text-lg mt-3 block">Equity</span></button>
+                    <button onclick="selectClass('Debt')" class="p-6 border-2 border-gray-700 hover:border-emerald-400 rounded-3xl text-left">🏦<br><span class="font-semibold text-lg mt-3 block">Debt</span></button>
+                    <button onclick="selectClass('Commodity')" class="p-6 border-2 border-gray-700 hover:border-emerald-400 rounded-3xl text-left">🏅<br><span class="font-semibold text-lg mt-3 block">Commodity</span></button>
+                    <button onclick="selectClass('Real Estate')" class="p-6 border-2 border-gray-700 hover:border-emerald-400 rounded-3xl text-left">🏠<br><span class="font-semibold text-lg mt-3 block">Real Estate</span></button>
                 </div>
             </div>
 
@@ -214,16 +200,29 @@
                 
                 <input id="asset-name" type="text" placeholder="Asset Name / Description" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 mb-4">
 
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <input id="asset-invested" type="number" placeholder="Invested Amount (₹)" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
-                    <input id="asset-current" type="number" placeholder="Current Value (₹)" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Units</label>
+                        <input id="asset-units" type="number" step="0.0001" placeholder="Units / Shares" 
+                               class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Invested (₹)</label>
+                        <input id="asset-invested" type="number" placeholder="Total Invested" 
+                               class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Current Value (₹)</label>
+                        <input id="asset-current" type="number" placeholder="Current Value" 
+                               class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+                    </div>
                 </div>
 
                 <div id="extra-fields" class="space-y-4"></div>
 
                 <div class="flex gap-4 mt-10">
                     <button onclick="goBackToStep1()" class="flex-1 py-4 border border-gray-600 rounded-3xl font-medium hover:bg-gray-800">Back</button>
-                    <button onclick="saveNewAsset()" class="flex-1 py-4 bg-emerald-500 text-black font-semibold rounded-3xl">Save Asset</button>
+                    <button onclick="saveAsset()" id="save-btn" class="flex-1 py-4 bg-emerald-500 text-black font-semibold rounded-3xl">Save Asset</button>
                 </div>
             </div>
 
@@ -236,12 +235,12 @@
         <div class="modal bg-gray-900 rounded-3xl w-full max-w-2xl mx-4 p-8">
             <h3 class="text-2xl font-semibold mb-2">Link Assets to Goal</h3>
             <p id="link-goal-name" class="text-emerald-400 mb-6"></p>
-
             <div class="max-h-96 overflow-auto bg-gray-800 rounded-2xl p-2">
                 <table class="w-full">
                     <thead>
                         <tr class="text-gray-400 text-sm">
                             <th class="text-left py-4 px-6">Asset</th>
+                            <th class="text-right py-4 px-6">Units</th>
                             <th class="text-right py-4 px-6">Current Value</th>
                             <th class="w-12 text-center">Link</th>
                         </tr>
@@ -249,7 +248,6 @@
                     <tbody id="link-assets-body" class="divide-y divide-gray-700"></tbody>
                 </table>
             </div>
-
             <div class="flex gap-4 mt-8">
                 <button onclick="hideLinkModal()" class="flex-1 py-4 border border-gray-600 rounded-3xl font-medium">Cancel</button>
                 <button onclick="saveGoalLinks()" class="flex-1 py-4 bg-emerald-500 text-black font-semibold rounded-3xl">Save Links</button>
@@ -257,7 +255,7 @@
         </div>
     </div>
 
-    <!-- Income, Expense, Goal Modals (same as before) -->
+    <!-- Income, Expense, Goal Modals (standard) -->
     <div id="income-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
         <div class="modal bg-gray-900 rounded-3xl w-full max-w-md mx-4 p-8">
             <h3 class="text-2xl font-semibold mb-6">Add Income</h3>
@@ -265,7 +263,7 @@
             <input id="income-source" type="text" placeholder="Source" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 mb-4">
             <input id="income-amount" type="number" placeholder="Amount (₹)" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
             <div class="flex gap-4 mt-8">
-                <button onclick="hideIncomeModal()" class="flex-1 py-4 border border-gray-600 rounded-3xl">Cancel</button>
+                <button onclick="hideIncomeModal()" class="flex-1 py-4 border border-gray-600 rounded-3xl font-medium">Cancel</button>
                 <button onclick="saveIncome()" class="flex-1 py-4 bg-emerald-500 text-black font-semibold rounded-3xl">Add Income</button>
             </div>
         </div>
@@ -278,7 +276,7 @@
             <input id="expense-category" type="text" placeholder="Category" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 mb-4">
             <input id="expense-amount" type="number" placeholder="Amount (₹)" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
             <div class="flex gap-4 mt-8">
-                <button onclick="hideExpenseModal()" class="flex-1 py-4 border border-gray-600 rounded-3xl">Cancel</button>
+                <button onclick="hideExpenseModal()" class="flex-1 py-4 border border-gray-600 rounded-3xl font-medium">Cancel</button>
                 <button onclick="saveExpense()" class="flex-1 py-4 bg-red-500 text-white font-semibold rounded-3xl">Add Expense</button>
             </div>
         </div>
@@ -291,7 +289,7 @@
             <input id="goal-target" type="number" placeholder="Target Amount (₹)" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 mb-4">
             <input id="goal-date" type="date" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
             <div class="flex gap-4 mt-10">
-                <button onclick="hideGoalModal()" class="flex-1 py-4 border border-gray-600 rounded-3xl">Cancel</button>
+                <button onclick="hideGoalModal()" class="flex-1 py-4 border border-gray-600 rounded-3xl font-medium">Cancel</button>
                 <button onclick="saveGoal()" class="flex-1 py-4 bg-emerald-500 text-black font-semibold rounded-3xl">Create Goal</button>
             </div>
         </div>
@@ -304,6 +302,7 @@
         let goalsData = [];
 
         let currentSelectedClass = '';
+        let editingAssetId = null;
         let currentLinkingGoalId = null;
 
         const subtypes = {
@@ -313,6 +312,12 @@
             'Real Estate': ['Flat / Apartment', 'REIT']
         };
 
+        function shouldShowUnits(subtype) {
+            return ['Indian Direct Shares','Overseas Equity','Indian Equity Mutual Funds','Overseas Mutual Funds','ETF',
+                    'Debt Based Mutual Fund','Gold ETF','Gold Mutual Funds','Silver ETF','Silver Mutual Funds','REIT']
+                    .includes(subtype);
+        }
+
         function calculateStats() {
             const invested = assetsData.reduce((sum, a) => sum + (a.invested || 0), 0);
             const current = assetsData.reduce((sum, a) => sum + (a.currentValue || 0), 0);
@@ -320,7 +325,6 @@
             const totalIncome = incomeData.reduce((sum, i) => sum + (i.amount || 0), 0);
             const totalExpense = expenseData.reduce((sum, e) => sum + (e.amount || 0), 0);
             const netWorth = current;
-
             return { invested, current, profit, totalIncome, totalExpense, netWorth };
         }
 
@@ -337,23 +341,311 @@
         function renderAssets() {
             const tbody = document.getElementById('assets-table');
             tbody.innerHTML = assetsData.length === 0 
-                ? `<tr><td colspan="6" class="text-center py-16 text-gray-400">No assets added yet</td></tr>`
+                ? `<tr><td colspan="7" class="text-center py-16 text-gray-400">No assets added yet</td></tr>`
                 : assetsData.map((asset, i) => {
                     const pl = (asset.currentValue || 0) - (asset.invested || 0);
+                    const avgBuyPrice = asset.units && asset.units > 0 ? (asset.invested / asset.units).toFixed(2) : '-';
                     return `<tr class="hover:bg-gray-800">
                         <td class="py-6 px-8 font-medium">${asset.name}</td>
                         <td class="py-6 px-8 text-sm">
                             <span class="font-medium">${asset.mainClass}</span><br>
                             <span class="text-gray-400">${asset.subtype}</span>
                         </td>
-                        <td class="py-6 px-8 text-right">₹${(asset.invested||0).toLocaleString('en-IN')}</td>
+                        <td class="py-6 px-8 text-right font-medium">${asset.units ? asset.units.toLocaleString('en-IN') : '-'}</td>
+                        <td class="py-6 px-8 text-right text-gray-400">₹${avgBuyPrice}</td>
                         <td class="py-6 px-8 text-right font-semibold">₹${(asset.currentValue||0).toLocaleString('en-IN')}</td>
                         <td class="py-6 px-8 text-right ${pl >= 0 ? 'text-emerald-400' : 'text-red-400'}">₹${pl.toLocaleString('en-IN')}</td>
-                        <td class="py-6 px-8 text-center">
+                        <td class="py-6 px-8 text-center space-x-4">
+                            <button onclick="editAsset(${i})" class="text-emerald-400 hover:text-emerald-300"><i class="fa-solid fa-pen"></i></button>
                             <button onclick="deleteAsset(${i})" class="text-red-400 hover:text-red-600"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>`;
                 }).join('');
+        }
+
+        function renderGoals() {
+            const container = document.getElementById('goals-container');
+            container.innerHTML = goalsData.length === 0 
+                ? `<div class="col-span-2 text-center py-20 text-gray-400">No goals created yet</div>`
+                : goalsData.map(goal => {
+                    const linkedValue = getLinkedValue(goal);
+                    const progress = goal.target > 0 ? Math.min(Math.round((linkedValue / goal.target) * 100), 100) : 0;
+                    return `
+                    <div class="bg-gray-900 rounded-3xl p-7">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold text-xl">${goal.name}</h4>
+                                <p class="text-emerald-400 mt-1">Target: ₹${goal.target.toLocaleString('en-IN')}</p>
+                            </div>
+                            <button onclick="openLinkModal(${goal.id})" class="text-xs bg-gray-800 hover:bg-emerald-500 hover:text-black px-5 py-2 rounded-3xl flex items-center gap-1">
+                                <i class="fa-solid fa-link"></i> Link Assets
+                            </button>
+                        </div>
+                        <div class="mt-8">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>₹${linkedValue.toLocaleString('en-IN')}</span>
+                                <span class="font-medium">₹${goal.target.toLocaleString('en-IN')}</span>
+                            </div>
+                            <div class="h-3 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-3 bg-emerald-500 transition-all" style="width: ${progress}%"></div>
+                            </div>
+                            <p class="text-center text-xs text-gray-400 mt-3">${progress}% complete</p>
+                        </div>
+                    </div>`;
+                }).join('');
+        }
+
+        function getLinkedValue(goal) {
+            if (!goal.linkedAssets) return 0;
+            return goal.linkedAssets.reduce((sum, id) => {
+                const asset = assetsData.find(a => a.id === id);
+                return asset ? sum + (asset.currentValue || 0) : sum;
+            }, 0);
+        }
+
+        // Navigation
+        function navigateTo(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            document.getElementById(page + '-page').classList.remove('hidden');
+            document.getElementById('page-title').textContent = page === 'dashboard' ? 'Dashboard' : 
+                page.charAt(0).toUpperCase() + page.slice(1);
+
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.getElementById('nav-' + page).classList.add('active');
+
+            if (page === 'dashboard') renderDashboard();
+            if (page === 'assets') renderAssets();
+            if (page === 'goals') renderGoals();
+        }
+
+        // Add/Edit Asset Flow
+        function startAddAsset() {
+            editingAssetId = null;
+            document.getElementById('modal-title').textContent = 'Add New Asset';
+            document.getElementById('save-btn').textContent = 'Save Asset';
+            currentSelectedClass = '';
+            document.getElementById('step-1').classList.remove('hidden');
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('add-asset-modal').classList.remove('hidden');
+            document.getElementById('add-asset-modal').classList.add('flex');
+        }
+
+        function editAsset(index) {
+            const asset = assetsData[index];
+            editingAssetId = index;
+
+            document.getElementById('modal-title').textContent = 'Edit Asset';
+            document.getElementById('save-btn').textContent = 'Save Changes';
+
+            currentSelectedClass = asset.mainClass;
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.remove('hidden');
+
+            document.getElementById('subtype').innerHTML = `<option value="${asset.subtype}">${asset.subtype}</option>` + 
+                subtypes[asset.mainClass].filter(s => s !== asset.subtype).map(s => `<option value="${s}">${s}</option>`).join('');
+
+            document.getElementById('asset-name').value = asset.name;
+            document.getElementById('asset-units').value = asset.units || '';
+            document.getElementById('asset-invested').value = asset.invested || '';
+            document.getElementById('asset-current').value = asset.currentValue || '';
+
+            updateExtraFields();
+            document.getElementById('add-asset-modal').classList.remove('hidden');
+            document.getElementById('add-asset-modal').classList.add('flex');
+        }
+
+        function selectClass(cls) {
+            currentSelectedClass = cls;
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.remove('hidden');
+            document.getElementById('modal-title').textContent = `Step 2: ${cls} Details`;
+
+            const select = document.getElementById('subtype');
+            select.innerHTML = '<option value="">Select Subtype</option>' + 
+                subtypes[cls].map(s => `<option value="${s}">${s}</option>`).join('');
+            document.getElementById('extra-fields').classList.add('hidden');
+        }
+
+        function updateExtraFields() {
+            const subtype = document.getElementById('subtype').value;
+            const extraDiv = document.getElementById('extra-fields');
+            extraDiv.innerHTML = '';
+
+            if (subtype.includes('Physical Gold') || subtype.includes('Physical Silver')) {
+                extraDiv.innerHTML = `
+                    <div class="grid grid-cols-2 gap-4">
+                        <input id="quantity" type="number" placeholder="Quantity (grams)" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+                        <input id="price-per-gram" type="number" placeholder="Price per gram (₹)" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+                    </div>`;
+                extraDiv.classList.remove('hidden');
+            } else if (subtype === 'Flat / Apartment') {
+                extraDiv.innerHTML = `
+                    <div class="grid grid-cols-2 gap-4">
+                        <input id="sqft" type="number" placeholder="Area (sq ft)" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+                        <input id="property-value" type="number" placeholder="Property Value (₹)" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+                    </div>`;
+                extraDiv.classList.remove('hidden');
+            }
+        }
+
+        function saveAsset() {
+            const name = document.getElementById('asset-name').value.trim();
+            const subtype = document.getElementById('subtype').value;
+            const units = parseFloat(document.getElementById('asset-units').value) || 0;
+            const invested = parseFloat(document.getElementById('asset-invested').value) || 0;
+            let current = parseFloat(document.getElementById('asset-current').value) || 0;
+
+            if (!name || !subtype) return alert("Asset name and subtype are required");
+
+            // Auto calculate for physical gold/silver
+            const quantity = parseFloat(document.getElementById('quantity')?.value || 0);
+            const pricePerGram = parseFloat(document.getElementById('price-per-gram')?.value || 0);
+            if (quantity > 0 && pricePerGram > 0) current = quantity * pricePerGram;
+
+            const assetData = {
+                name,
+                mainClass: currentSelectedClass,
+                subtype,
+                units: units > 0 ? units : null,
+                invested,
+                currentValue: current
+            };
+
+            if (editingAssetId !== null) {
+                // Update existing asset
+                assetsData[editingAssetId] = { ...assetsData[editingAssetId], ...assetData };
+            } else {
+                // Add new asset
+                assetData.id = Date.now();
+                assetsData.push(assetData);
+            }
+
+            hideAddAssetModal();
+            renderAssets();
+            renderDashboard();
+            renderGoals();
+        }
+
+        function hideAddAssetModal() {
+            document.getElementById('add-asset-modal').classList.add('hidden');
+            document.getElementById('add-asset-modal').classList.remove('flex');
+            editingAssetId = null;
+        }
+
+        function goBackToStep1() {
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-1').classList.remove('hidden');
+            document.getElementById('modal-title').textContent = 'Add New Asset';
+        }
+
+        function deleteAsset(index) {
+            if (confirm("Delete this asset permanently?")) {
+                assetsData.splice(index, 1);
+                renderAssets();
+                renderDashboard();
+                renderGoals();
+            }
+        }
+
+        // Goal Linking Functions
+        function openLinkModal(goalId) {
+            currentLinkingGoalId = goalId;
+            const goal = goalsData.find(g => g.id === goalId);
+            document.getElementById('link-goal-name').textContent = goal.name;
+
+            const tbody = document.getElementById('link-assets-body');
+            tbody.innerHTML = assetsData.map(asset => {
+                const isLinked = goal.linkedAssets ? goal.linkedAssets.includes(asset.id) : false;
+                return `<tr class="hover:bg-gray-700">
+                    <td class="py-5 px-6">${asset.name}</td>
+                    <td class="py-5 px-6 text-right">${asset.units || '-'}</td>
+                    <td class="py-5 px-6 text-right">₹${(asset.currentValue || 0).toLocaleString('en-IN')}</td>
+                    <td class="px-6 text-center">
+                        <input type="checkbox" ${isLinked ? 'checked' : ''} data-asset-id="${asset.id}" class="w-5 h-5 accent-emerald-400">
+                    </td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('link-modal').classList.remove('hidden');
+            document.getElementById('link-modal').classList.add('flex');
+        }
+
+        function hideLinkModal() {
+            document.getElementById('link-modal').classList.add('hidden');
+            document.getElementById('link-modal').classList.remove('flex');
+        }
+
+        function saveGoalLinks() {
+            if (!currentLinkingGoalId) return;
+            const goal = goalsData.find(g => g.id === currentLinkingGoalId);
+            const checkboxes = document.querySelectorAll('#link-assets-body input[type="checkbox"]');
+            goal.linkedAssets = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => parseInt(cb.dataset.assetId));
+
+            hideLinkModal();
+            renderGoals();
+            renderDashboard();
+        }
+
+        // Income, Expense, Goal functions (standard)
+        function showAddIncomeModal() {
+            document.getElementById('income-modal').classList.remove('hidden');
+            document.getElementById('income-modal').classList.add('flex');
+        }
+        function hideIncomeModal() {
+            document.getElementById('income-modal').classList.add('hidden');
+            document.getElementById('income-modal').classList.remove('flex');
+        }
+        function saveIncome() {
+            const date = document.getElementById('income-date').value;
+            const source = document.getElementById('income-source').value.trim();
+            const amount = parseFloat(document.getElementById('income-amount').value) || 0;
+            if (!source || amount <= 0) return alert("Please fill all fields");
+            incomeData.push({ date, source, amount });
+            hideIncomeModal();
+            renderIncome();
+            renderDashboard();
+        }
+
+        function showAddExpenseModal() {
+            document.getElementById('expense-modal').classList.remove('hidden');
+            document.getElementById('expense-modal').classList.add('flex');
+        }
+        function hideExpenseModal() {
+            document.getElementById('expense-modal').classList.add('hidden');
+            document.getElementById('expense-modal').classList.remove('flex');
+        }
+        function saveExpense() {
+            const date = document.getElementById('expense-date').value;
+            const category = document.getElementById('expense-category').value.trim();
+            const amount = parseFloat(document.getElementById('expense-amount').value) || 0;
+            if (!category || amount <= 0) return alert("Please fill all fields");
+            expenseData.push({ date, category, amount });
+            hideExpenseModal();
+            renderExpenses();
+            renderDashboard();
+        }
+
+        function showAddGoalModal() {
+            document.getElementById('goal-name').value = '';
+            document.getElementById('goal-target').value = '';
+            document.getElementById('goal-date').value = '';
+            document.getElementById('goal-modal').classList.remove('hidden');
+            document.getElementById('goal-modal').classList.add('flex');
+        }
+        function hideGoalModal() {
+            document.getElementById('goal-modal').classList.add('hidden');
+            document.getElementById('goal-modal').classList.remove('flex');
+        }
+        function saveGoal() {
+            const name = document.getElementById('goal-name').value.trim();
+            const target = parseFloat(document.getElementById('goal-target').value) || 0;
+            const deadline = document.getElementById('goal-date').value;
+            if (!name || target <= 0) return alert("Please enter goal details");
+            goalsData.push({ id: Date.now(), name, target, deadline, linkedAssets: [] });
+            hideGoalModal();
+            renderGoals();
         }
 
         function renderIncome() {
@@ -378,267 +670,16 @@
                 </tr>`).join('');
         }
 
-        function renderGoals() {
-            const container = document.getElementById('goals-container');
-            container.innerHTML = goalsData.length === 0 
-                ? `<div class="col-span-2 text-center py-20 text-gray-400">No goals created yet</div>`
-                : goalsData.map(goal => {
-                    const linkedValue = getLinkedValue(goal);
-                    const progress = goal.target > 0 ? Math.min(Math.round((linkedValue / goal.target) * 100), 100) : 0;
-                    return `
-                    <div class="bg-gray-900 rounded-3xl p-7">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h4 class="font-semibold text-xl">${goal.name}</h4>
-                                <p class="text-emerald-400 mt-1">Target: ₹${goal.target.toLocaleString('en-IN')}</p>
-                            </div>
-                            <button onclick="openLinkModal(${goal.id})" 
-                                    class="text-xs bg-gray-800 hover:bg-emerald-500 hover:text-black px-5 py-2 rounded-3xl flex items-center gap-1">
-                                <i class="fa-solid fa-link"></i> Link Assets
-                            </button>
-                        </div>
-                        <div class="mt-8">
-                            <div class="flex justify-between text-sm mb-2">
-                                <span>₹${linkedValue.toLocaleString('en-IN')}</span>
-                                <span class="font-medium">₹${goal.target.toLocaleString('en-IN')}</span>
-                            </div>
-                            <div class="h-3 bg-gray-800 rounded-full overflow-hidden">
-                                <div class="h-3 bg-emerald-500 transition-all" style="width: ${progress}%"></div>
-                            </div>
-                            <p class="text-center text-xs text-gray-400 mt-3">${progress}% complete</p>
-                        </div>
-                    </div>`;
-                }).join('');
-        }
-
-        function getLinkedValue(goal) {
-            if (!goal.linkedAssets) return 0;
-            return goal.linkedAssets.reduce((sum, assetId) => {
-                const asset = assetsData.find(a => a.id === assetId);
-                return asset ? sum + (asset.currentValue || 0) : sum;
-            }, 0);
-        }
-
-        function navigateTo(page) {
-            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-            document.getElementById(page + '-page').classList.remove('hidden');
-            
-            document.getElementById('page-title').textContent = page === 'dashboard' ? 'Dashboard' : 
-                page.charAt(0).toUpperCase() + page.slice(1);
-
-            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-            document.getElementById('nav-' + page).classList.add('active');
-
-            if (page === 'dashboard') renderDashboard();
-            if (page === 'assets') renderAssets();
-            if (page === 'income') renderIncome();
-            if (page === 'expenses') renderExpenses();
-            if (page === 'goals') renderGoals();
-        }
-
-        // Asset Functions (same as before)
-        function startAddAsset() {
-            currentSelectedClass = '';
-            document.getElementById('step-1').classList.remove('hidden');
-            document.getElementById('step-2').classList.add('hidden');
-            document.getElementById('modal-step-title').textContent = 'Step 1: Choose Asset Class';
-            document.getElementById('add-asset-modal').classList.remove('hidden');
-            document.getElementById('add-asset-modal').classList.add('flex');
-        }
-
-        function selectClass(cls) {
-            currentSelectedClass = cls;
-            document.getElementById('step-1').classList.add('hidden');
-            document.getElementById('step-2').classList.remove('hidden');
-            document.getElementById('modal-step-title').textContent = `Step 2: ${cls} Details`;
-
-            const select = document.getElementById('subtype');
-            select.innerHTML = '<option value="">Select Subtype</option>' + 
-                subtypes[cls].map(s => `<option value="${s}">${s}</option>`).join('');
-            document.getElementById('extra-fields').classList.add('hidden');
-        }
-
-        function updateExtraFields() {
-            const subtype = document.getElementById('subtype').value;
-            const extraDiv = document.getElementById('extra-fields');
-            extraDiv.innerHTML = '';
-
-            if (subtype.includes('Physical Gold') || subtype.includes('Physical Silver')) {
-                extraDiv.innerHTML = `
-                    <div class="grid grid-cols-2 gap-4">
-                        <input id="quantity" type="number" placeholder="Quantity in grams" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
-                        <input id="price-per-gram" type="number" placeholder="Price per gram (₹)" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
-                    </div>`;
-                extraDiv.classList.remove('hidden');
-            } else if (subtype === 'Flat / Apartment') {
-                extraDiv.innerHTML = `
-                    <div class="grid grid-cols-2 gap-4">
-                        <input id="sqft" type="number" placeholder="Area in sq ft" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
-                        <input id="property-value" type="number" placeholder="Property Value (₹)" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
-                    </div>`;
-                extraDiv.classList.remove('hidden');
-            }
-        }
-
-        function goBackToStep1() {
-            document.getElementById('step-2').classList.add('hidden');
-            document.getElementById('step-1').classList.remove('hidden');
-            document.getElementById('modal-step-title').textContent = 'Step 1: Choose Asset Class';
-        }
-
-        function saveNewAsset() {
-            const name = document.getElementById('asset-name').value.trim();
-            const subtype = document.getElementById('subtype').value;
-            const invested = parseFloat(document.getElementById('asset-invested').value) || 0;
-            let current = parseFloat(document.getElementById('asset-current').value) || 0;
-
-            if (!name || !subtype) return alert("Please fill required fields");
-
-            const quantity = parseFloat(document.getElementById('quantity')?.value || 0);
-            const pricePerGram = parseFloat(document.getElementById('price-per-gram')?.value || 0);
-            if (quantity > 0 && pricePerGram > 0) current = quantity * pricePerGram;
-
-            const asset = {
-                id: Date.now(),
-                name: name,
-                mainClass: currentSelectedClass,
-                subtype: subtype,
-                invested: invested,
-                currentValue: current
-            };
-
-            assetsData.push(asset);
-            hideAddAssetModal();
-            renderAssets();
-            renderDashboard();
-            renderGoals();
-        }
-
-        function hideAddAssetModal() {
-            document.getElementById('add-asset-modal').classList.add('hidden');
-            document.getElementById('add-asset-modal').classList.remove('flex');
-        }
-
-        function deleteAsset(index) {
-            if (confirm("Delete this asset?")) {
-                assetsData.splice(index, 1);
-                renderAssets();
-                renderDashboard();
-                renderGoals();
-            }
-        }
-
-        // Goal Linking Functions
-        function openLinkModal(goalId) {
-            currentLinkingGoalId = goalId;
-            const goal = goalsData.find(g => g.id === goalId);
-            if (!goal) return;
-
-            document.getElementById('link-goal-name').textContent = goal.name;
-
-            const tbody = document.getElementById('link-assets-body');
-            tbody.innerHTML = assetsData.map(asset => {
-                const isLinked = goal.linkedAssets ? goal.linkedAssets.includes(asset.id) : false;
-                return `
-                <tr class="hover:bg-gray-700">
-                    <td class="py-5 px-6">${asset.name} <span class="text-xs text-gray-400">(${asset.mainClass})</span></td>
-                    <td class="py-5 px-6 text-right">₹${(asset.currentValue || 0).toLocaleString('en-IN')}</td>
-                    <td class="px-6 text-center">
-                        <input type="checkbox" ${isLinked ? 'checked' : ''} data-asset-id="${asset.id}" 
-                               class="w-5 h-5 accent-emerald-400">
-                    </td>
-                </tr>`;
-            }).join('');
-
-            document.getElementById('link-modal').classList.remove('hidden');
-            document.getElementById('link-modal').classList.add('flex');
-        }
-
-        function hideLinkModal() {
-            document.getElementById('link-modal').classList.add('hidden');
-            document.getElementById('link-modal').classList.remove('flex');
-            currentLinkingGoalId = null;
-        }
-
-        function saveGoalLinks() {
-            if (!currentLinkingGoalId) return;
-            const goal = goalsData.find(g => g.id === currentLinkingGoalId);
-            if (!goal) return;
-
-            const checkboxes = document.querySelectorAll('#link-assets-body input[type="checkbox"]');
-            goal.linkedAssets = Array.from(checkboxes)
-                .filter(cb => cb.checked)
-                .map(cb => parseInt(cb.dataset.assetId));
-
-            hideLinkModal();
-            renderGoals();
-            renderDashboard();
-        }
-
-        // Income, Expense, Goal creation functions (same as previous)
-        function showAddIncomeModal() { /* ... */ document.getElementById('income-modal').classList.remove('hidden'); document.getElementById('income-modal').classList.add('flex'); }
-        function hideIncomeModal() { document.getElementById('income-modal').classList.add('hidden'); document.getElementById('income-modal').classList.remove('flex'); }
-        function saveIncome() {
-            const date = document.getElementById('income-date').value;
-            const source = document.getElementById('income-source').value.trim();
-            const amount = parseFloat(document.getElementById('income-amount').value) || 0;
-            if (!source || amount <= 0) return alert("Please fill correctly");
-            incomeData.push({ date, source, amount });
-            hideIncomeModal();
-            renderIncome();
-            renderDashboard();
-        }
-
-        function showAddExpenseModal() { /* ... */ document.getElementById('expense-modal').classList.remove('hidden'); document.getElementById('expense-modal').classList.add('flex'); }
-        function hideExpenseModal() { document.getElementById('expense-modal').classList.add('hidden'); document.getElementById('expense-modal').classList.remove('flex'); }
-        function saveExpense() {
-            const date = document.getElementById('expense-date').value;
-            const category = document.getElementById('expense-category').value.trim();
-            const amount = parseFloat(document.getElementById('expense-amount').value) || 0;
-            if (!category || amount <= 0) return alert("Please fill correctly");
-            expenseData.push({ date, category, amount });
-            hideExpenseModal();
-            renderExpenses();
-            renderDashboard();
-        }
-
-        function showAddGoalModal() {
-            document.getElementById('goal-name').value = '';
-            document.getElementById('goal-target').value = '';
-            document.getElementById('goal-date').value = '';
-            document.getElementById('goal-modal').classList.remove('hidden');
-            document.getElementById('goal-modal').classList.add('flex');
-        }
-        function hideGoalModal() {
-            document.getElementById('goal-modal').classList.add('hidden');
-            document.getElementById('goal-modal').classList.remove('flex');
-        }
-        function saveGoal() {
-            const name = document.getElementById('goal-name').value.trim();
-            const target = parseFloat(document.getElementById('goal-target').value) || 0;
-            const deadline = document.getElementById('goal-date').value;
-            if (!name || target <= 0) return alert("Please enter goal name and target");
-            
-            goalsData.push({
-                id: Date.now(),
-                name: name,
-                target: target,
-                deadline: deadline,
-                linkedAssets: []
-            });
-            hideGoalModal();
-            renderGoals();
-        }
-
         function refreshAll() {
             renderDashboard();
             renderAssets();
-            renderIncome();
-            renderExpenses();
             renderGoals();
         }
 
-        window.onload = () => navigateTo('dashboard');
+        // Initialize
+        window.onload = () => {
+            navigateTo('dashboard');
+        };
     </script>
 </body>
 </html>
