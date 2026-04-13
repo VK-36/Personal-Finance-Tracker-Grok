@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTrack • Personal Finance Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+        * { font-family: 'Inter', system_ui, sans-serif; }
+        
+        .page { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .sidebar-link { transition: all 0.2s; }
+        .sidebar-link.active { background-color: #10b981; color: black; border-radius: 9999px; }
+        
+        .card:hover { transform: translateY(-4px); }
+    </style>
+</head>
+<body class="bg-gray-950 text-white">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="w-72 bg-gray-900 border-r border-gray-800 flex flex-col">
+            <div class="px-8 pt-8 pb-6 border-b border-gray-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-emerald-500 rounded-2xl flex items-center justify-center text-2xl font-bold">₹</div>
+                    <h1 class="text-3xl font-semibold">FinTrack</h1>
+                </div>
+                <p class="text-emerald-400 text-sm mt-1">Your Personal Finance</p>
+            </div>
+
+            <nav class="flex-1 px-4 py-8 space-y-2">
+                <a onclick="navigateTo('dashboard')" id="nav-dashboard" class="sidebar-link active flex items-center gap-3 px-6 py-4 text-lg font-medium cursor-pointer">
+                    <i class="fa-solid fa-house"></i> Dashboard
+                </a>
+                <a onclick="navigateTo('assets')" id="nav-assets" class="sidebar-link flex items-center gap-3 px-6 py-4 text-lg font-medium cursor-pointer">
+                    <i class="fa-solid fa-chart-pie"></i> Assets
+                </a>
+                <a onclick="navigateTo('income')" id="nav-income" class="sidebar-link flex items-center gap-3 px-6 py-4 text-lg font-medium cursor-pointer">
+                    <i class="fa-solid fa-arrow-trend-up"></i> Income
+                </a>
+                <a onclick="navigateTo('expenses')" id="nav-expenses" class="sidebar-link flex items-center gap-3 px-6 py-4 text-lg font-medium cursor-pointer">
+                    <i class="fa-solid fa-arrow-trend-down"></i> Expenses
+                </a>
+                <a onclick="navigateTo('goals')" id="nav-goals" class="sidebar-link flex items-center gap-3 px-6 py-4 text-lg font-medium cursor-pointer">
+                    <i class="fa-solid fa-bullseye"></i> Goal Tracker
+                </a>
+            </nav>
+
+            <div class="p-6 border-t border-gray-800">
+                <div class="flex items-center gap-3 bg-gray-950 rounded-3xl p-4">
+                    <div class="w-10 h-10 bg-emerald-500 rounded-2xl flex items-center justify-center font-bold">V</div>
+                    <div>
+                        <p class="font-medium">Vidhu</p>
+                        <p class="text-xs text-gray-400">Chennai</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <div class="h-16 border-b border-gray-800 bg-gray-900 px-8 flex items-center justify-between">
+                <h2 id="page-title" class="text-3xl font-semibold">Dashboard</h2>
+                <button onclick="refreshAll()" 
+                        class="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-5 py-2 rounded-3xl text-sm">
+                    <i class="fa-solid fa-rotate"></i> Refresh
+                </button>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page flex-1 p-8 overflow-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+                    <div class="bg-gray-900 rounded-3xl p-6 card">
+                        <p class="text-gray-400">Invested Value</p>
+                        <p id="dash-invested" class="text-4xl font-semibold mt-3">₹0</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-3xl p-6 card">
+                        <p class="text-gray-400">Current Value</p>
+                        <p id="dash-current" class="text-4xl font-semibold mt-3">₹0</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-3xl p-6 card">
+                        <p class="text-gray-400">Total Profit</p>
+                        <p id="dash-profit" class="text-4xl font-semibold mt-3 text-emerald-400">₹0</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-3xl p-6 card">
+                        <p class="text-gray-400">Total Income</p>
+                        <p id="dash-income" class="text-4xl font-semibold mt-3">₹0</p>
+                    </div>
+                    <div class="bg-gray-900 rounded-3xl p-6 card">
+                        <p class="text-gray-400">Total Expenses</p>
+                        <p id="dash-expenses" class="text-4xl font-semibold mt-3 text-red-400">₹0</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-black card">
+                        <p class="text-emerald-950">Net Worth</p>
+                        <p id="dash-networth" class="text-4xl font-semibold mt-3">₹0</p>
+                    </div>
+                </div>
+
+                <div class="mt-16 text-center text-gray-400 py-20">
+                    <i class="fa-solid fa-wallet text-6xl mb-6 opacity-50"></i>
+                    <p class="text-2xl font-medium">Start building your portfolio</p>
+                    <p class="mt-3">Add your first asset to see live numbers here</p>
+                </div>
+            </div>
+
+            <!-- Assets Page -->
+            <div id="assets-page" class="page hidden flex-1 p-8 overflow-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-semibold">Assets</h2>
+                    <button onclick="showAddAssetModal()" 
+                            class="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-6 py-3 rounded-3xl flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Add Asset
+                    </button>
+                </div>
+                <div class="bg-gray-900 rounded-3xl overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-gray-800">
+                            <tr>
+                                <th class="text-left py-5 px-8">Asset Name</th>
+                                <th class="text-left py-5 px-8">Type</th>
+                                <th class="text-right py-5 px-8">Invested (₹)</th>
+                                <th class="text-right py-5 px-8">Current Value (₹)</th>
+                                <th class="text-right py-5 px-8">P/L</th>
+                                <th class="text-center py-5 px-8">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assets-table" class="divide-y divide-gray-800"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Income Page -->
+            <div id="income-page" class="page hidden flex-1 p-8 overflow-auto">
+                <div class="flex justify-between mb-8">
+                    <h2 class="text-3xl font-semibold">Income</h2>
+                    <button onclick="showAddIncomeModal()" 
+                            class="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-6 py-3 rounded-3xl flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Add Income
+                    </button>
+                </div>
+                <div class="bg-gray-900 rounded-3xl overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-gray-800">
+                            <tr>
+                                <th class="text-left py-5 px-8">Date</th>
+                                <th class="text-left py-5 px-8">Source</th>
+                                <th class="text-right py-5 px-8">Amount (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="income-table" class="divide-y divide-gray-800"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Expenses Page -->
+            <div id="expenses-page" class="page hidden flex-1 p-8 overflow-auto">
+                <div class="flex justify-between mb-8">
+                    <h2 class="text-3xl font-semibold">Expenses</h2>
+                    <button onclick="showAddExpenseModal()" 
+                            class="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-3 rounded-3xl flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Add Expense
+                    </button>
+                </div>
+                <div class="bg-gray-900 rounded-3xl overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-gray-800">
+                            <tr>
+                                <th class="text-left py-5 px-8">Date</th>
+                                <th class="text-left py-5 px-8">Category</th>
+                                <th class="text-right py-5 px-8">Amount (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenses-table" class="divide-y divide-gray-800"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Goals Page -->
+            <div id="goals-page" class="page hidden flex-1 p-8 overflow-auto">
+                <div class="flex justify-between mb-8">
+                    <h2 class="text-3xl font-semibold">Goal Tracker</h2>
+                    <button onclick="showAddGoalModal()" 
+                            class="bg-emerald-500 hover:bg-emerald-600 text-black font-semibold px-6 py-3 rounded-3xl flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> New Goal
+                    </button>
+                </div>
+                <div id="goals-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="asset-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div class="bg-gray-900 rounded-3xl w-full max-w-lg mx-4 p-8">
+            <h3 class="text-2xl font-semibold mb-6">Add New Asset</h3>
+            <div class="space-y-5">
+                <input id="asset-name" type="text" placeholder="Asset Name (e.g. HDFC Bank Shares)" 
+                       class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 focus:outline-none focus:border-emerald-400">
+                <select id="asset-type" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+                    <option value="Stock">Stock</option>
+                    <option value="Mutual Fund">Mutual Fund</option>
+                    <option value="FD">Fixed Deposit</option>
+                    <option value="Crypto">Crypto</option>
+                    <option value="Gold">Gold</option>
+                    <option value="Others">Others</option>
+                </select>
+                <div class="grid grid-cols-2 gap-4">
+                    <input id="asset-invested" type="number" placeholder="Invested Amount (₹)" 
+                           class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+                    <input id="asset-current" type="number" placeholder="Current Value (₹)" 
+                           class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+                </div>
+            </div>
+            <div class="flex gap-4 mt-8">
+                <button onclick="hideAssetModal()" class="flex-1 py-4 border border-gray-600 rounded-3xl font-medium">Cancel</button>
+                <button onclick="saveAsset()" class="flex-1 py-4 bg-emerald-500 text-black font-semibold rounded-3xl">Save Asset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Income Modal -->
+    <div id="income-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div class="bg-gray-900 rounded-3xl w-full max-w-md mx-4 p-8">
+            <h3 class="text-2xl font-semibold mb-6">Add Income</h3>
+            <input id="income-date" type="date" value="2026-04-13" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 mb-4">
+            <input id="income-source" type="text" placeholder="Source (e.g. Salary, Freelance)" 
+                   class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 mb-4">
+            <input id="income-amount" type="number" placeholder="Amount (₹)" 
+                   class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+            <button onclick="saveIncome()" class="mt-6 w-full py-4 bg-emerald-500 text-black font-semibold rounded-3xl">Add Income</button>
+        </div>
+    </div>
+
+    <!-- Expense Modal -->
+    <div id="expense-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div class="bg-gray-900 rounded-3xl w-full max-w-md mx-4 p-8">
+            <h3 class="text-2xl font-semibold mb-6">Add Expense</h3>
+            <input id="expense-date" type="date" value="2026-04-13" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 mb-4">
+            <input id="expense-category" type="text" placeholder="Category (e.g. Rent, Groceries)" 
+                   class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 mb-4">
+            <input id="expense-amount" type="number" placeholder="Amount (₹)" 
+                   class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+            <button onclick="saveExpense()" class="mt-6 w-full py-4 bg-red-500 text-white font-semibold rounded-3xl">Add Expense</button>
+        </div>
+    </div>
+
+    <!-- Goal Modal -->
+    <div id="goal-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div class="bg-gray-900 rounded-3xl w-full max-w-lg mx-4 p-8">
+            <h3 class="text-2xl font-semibold mb-6">Create New Goal</h3>
+            <input id="goal-name" type="text" placeholder="Goal Name (e.g. Buy House in Chennai)" 
+                   class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 mb-4">
+            <input id="goal-target" type="number" placeholder="Target Amount (₹)" 
+                   class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4 mb-4">
+            <input id="goal-date" type="date" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-5 py-4">
+            <button onclick="saveGoal()" class="mt-6 w-full py-4 bg-emerald-500 text-black font-semibold rounded-3xl">Create Goal</button>
+        </div>
+    </div>
+
+    <script>
+        // All data starts empty
+        let assetsData = [];
+        let incomeData = [];
+        let expenseData = [];
+        let goalsData = [];
+
+        function calculateStats() {
+            const invested = assetsData.reduce((sum, a) => sum + (a.invested || 0), 0);
+            const current = assetsData.reduce((sum, a) => sum + (a.currentValue || 0), 0);
+            const profit = current - invested;
+            const totalIncome = incomeData.reduce((sum, i) => sum + (i.amount || 0), 0);
+            const totalExpense = expenseData.reduce((sum, e) => sum + (e.amount || 0), 0);
+            
+            // Net Worth = Current Value of Assets only (No hardcoded cash)
+            const netWorth = current;
+
+            return { invested, current, profit, totalIncome, totalExpense, netWorth };
+        }
+
+        function renderDashboard() {
+            const stats = calculateStats();
+            
+            document.getElementById('dash-invested').textContent = `₹${stats.invested.toLocaleString('en-IN')}`;
+            document.getElementById('dash-current').textContent = `₹${stats.current.toLocaleString('en-IN')}`;
+            document.getElementById('dash-profit').textContent = `₹${stats.profit.toLocaleString('en-IN')}`;
+            document.getElementById('dash-income').textContent = `₹${stats.totalIncome.toLocaleString('en-IN')}`;
+            document.getElementById('dash-expenses').textContent = `₹${stats.totalExpense.toLocaleString('en-IN')}`;
+            document.getElementById('dash-networth').textContent = `₹${stats.netWorth.toLocaleString('en-IN')}`;
+        }
+
+        function renderAssets() {
+            const tbody = document.getElementById('assets-table');
+            tbody.innerHTML = '';
+            
+            if (assetsData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-16 text-gray-400">No assets yet.<br>Click "Add Asset" to start</td></tr>`;
+                return;
+            }
+
+            assetsData.forEach((asset, index) => {
+                const pl = (asset.currentValue || 0) - (asset.invested || 0);
+                const row = document.createElement('tr');
+                row.className = "hover:bg-gray-800 transition-colors";
+                row.innerHTML = `
+                    <td class="py-6 px-8 font-medium">${asset.name}</td>
+                    <td class="py-6 px-8"><span class="px-4 py-1 text-xs bg-gray-800 rounded-3xl">${asset.type}</span></td>
+                    <td class="py-6 px-8 text-right">₹${(asset.invested || 0).toLocaleString('en-IN')}</td>
+                    <td class="py-6 px-8 text-right font-semibold">₹${(asset.currentValue || 0).toLocaleString('en-IN')}</td>
+                    <td class="py-6 px-8 text-right ${pl >= 0 ? 'text-emerald-400' : 'text-red-400'}">
+                        ₹${pl.toLocaleString('en-IN')}
+                    </td>
+                    <td class="py-6 px-8 text-center">
+                        <button onclick="deleteAsset(${index})" class="text-red-400 hover:text-red-600">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderIncome() {
+            const tbody = document.getElementById('income-table');
+            tbody.innerHTML = incomeData.length === 0 
+                ? `<tr><td colspan="3" class="text-center py-16 text-gray-400">No income recorded yet</td></tr>`
+                : incomeData.map(i => `
+                    <tr class="hover:bg-gray-800">
+                        <td class="py-6 px-8">${i.date}</td>
+                        <td class="py-6 px-8">${i.source}</td>
+                        <td class="py-6 px-8 text-right text-emerald-400 font-medium">₹${i.amount.toLocaleString('en-IN')}</td>
+                    </tr>`).join('');
+        }
+
+        function renderExpenses() {
+            const tbody = document.getElementById('expenses-table');
+            tbody.innerHTML = expenseData.length === 0 
+                ? `<tr><td colspan="3" class="text-center py-16 text-gray-400">No expenses recorded yet</td></tr>`
+                : expenseData.map(e => `
+                    <tr class="hover:bg-gray-800">
+                        <td class="py-6 px-8">${e.date}</td>
+                        <td class="py-6 px-8">${e.category}</td>
+                        <td class="py-6 px-8 text-right text-red-400 font-medium">₹${e.amount.toLocaleString('en-IN')}</td>
+                    </tr>`).join('');
+        }
+
+        function renderGoals() {
+            const container = document.getElementById('goals-container');
+            container.innerHTML = goalsData.length === 0 
+                ? `<div class="col-span-2 text-center py-20 text-gray-400">No goals yet. Create your first goal.</div>`
+                : goalsData.map(g => `
+                    <div class="bg-gray-900 rounded-3xl p-6">
+                        <h4 class="font-semibold">${g.name}</h4>
+                        <p class="text-emerald-400 mt-2">Target: ₹${g.target.toLocaleString('en-IN')}</p>
+                        <p class="text-xs text-gray-400 mt-4">Deadline: ${g.deadline || 'Not set'}</p>
+                    </div>`).join('');
+        }
+
+        function navigateTo(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`${page}-page`).classList.remove('hidden');
+            
+            document.getElementById('page-title').textContent = 
+                page === 'dashboard' ? 'Dashboard' : page.charAt(0).toUpperCase() + page.slice(1);
+
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.getElementById(`nav-${page}`).classList.add('active');
+
+            if (page === 'dashboard') renderDashboard();
+            if (page === 'assets') renderAssets();
+            if (page === 'income') renderIncome();
+            if (page === 'expenses') renderExpenses();
+            if (page === 'goals') renderGoals();
+        }
+
+        // Modal Controls
+        function showAddAssetModal() {
+            document.getElementById('asset-modal').classList.remove('hidden');
+            document.getElementById('asset-modal').classList.add('flex');
+        }
+        function hideAssetModal() {
+            document.getElementById('asset-modal').classList.add('hidden');
+            document.getElementById('asset-modal').classList.remove('flex');
+        }
+
+        function saveAsset() {
+            const name = document.getElementById('asset-name').value.trim();
+            const type = document.getElementById('asset-type').value;
+            const invested = parseFloat(document.getElementById('asset-invested').value) || 0;
+            const current = parseFloat(document.getElementById('asset-current').value) || 0;
+
+            if (!name) return alert("Asset name is required");
+
+            assetsData.push({ name, type, invested, currentValue: current });
+            hideAssetModal();
+            renderAssets();
+            renderDashboard();
+        }
+
+        function deleteAsset(index) {
+            if (confirm("Delete this asset permanently?")) {
+                assetsData.splice(index, 1);
+                renderAssets();
+                renderDashboard();
+            }
+        }
+
+        function showAddIncomeModal() {
+            document.getElementById('income-modal').classList.remove('hidden');
+            document.getElementById('income-modal').classList.add('flex');
+        }
+        function hideIncomeModal() {
+            document.getElementById('income-modal').classList.add('hidden');
+            document.getElementById('income-modal').classList.remove('flex');
+        }
+        function saveIncome() {
+            const date = document.getElementById('income-date').value;
+            const source = document.getElementById('income-source').value.trim();
+            const amount = parseFloat(document.getElementById('income-amount').value) || 0;
+            if (!source || amount <= 0) return alert("Please fill all fields correctly");
+            incomeData.push({ date, source, amount });
+            hideIncomeModal();
+            renderIncome();
+            renderDashboard();
+        }
+
+        function showAddExpenseModal() {
+            document.getElementById('expense-modal').classList.remove('hidden');
+            document.getElementById('expense-modal').classList.add('flex');
+        }
+        function hideExpenseModal() {
+            document.getElementById('expense-modal').classList.add('hidden');
+            document.getElementById('expense-modal').classList.remove('flex');
+        }
+        function saveExpense() {
+            const date = document.getElementById('expense-date').value;
+            const category = document.getElementById('expense-category').value.trim();
+            const amount = parseFloat(document.getElementById('expense-amount').value) || 0;
+            if (!category || amount <= 0) return alert("Please fill all fields correctly");
+            expenseData.push({ date, category, amount });
+            hideExpenseModal();
+            renderExpenses();
+            renderDashboard();
+        }
+
+        function showAddGoalModal() {
+            document.getElementById('goal-modal').classList.remove('hidden');
+            document.getElementById('goal-modal').classList.add('flex');
+        }
+        function hideGoalModal() {
+            document.getElementById('goal-modal').classList.add('hidden');
+            document.getElementById('goal-modal').classList.remove('flex');
+        }
+        function saveGoal() {
+            const name = document.getElementById('goal-name').value.trim();
+            const target = parseFloat(document.getElementById('goal-target').value) || 0;
+            const deadline = document.getElementById('goal-date').value;
+            if (!name || target <= 0) return alert("Please enter valid goal details");
+            goalsData.push({ name, target, deadline });
+            hideGoalModal();
+            renderGoals();
+        }
+
+        function refreshAll() {
+            renderDashboard();
+            renderAssets();
+            renderIncome();
+            renderExpenses();
+            renderGoals();
+        }
+
+        // Start the app
+        window.onload = () => {
+            navigateTo('dashboard');
+        };
+    </script>
+</body>
+</html>
